@@ -244,7 +244,7 @@ describe "Type inference: class var" do
 
       Foo.foo
       ",
-      "undefined class variable"
+      "undefined class variable '@@foo' of Foo"
   end
 
   it "errors if using class variable at the top level" do

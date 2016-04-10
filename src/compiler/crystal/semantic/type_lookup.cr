@@ -94,6 +94,14 @@ module Crystal
         if type_var.is_a?(NumberLiteral)
           type_var
         else
+          # Check the case of T resolving to a number
+          if type_var.is_a?(Path) && type_var.names.size == 1
+            the_type = @root.lookup_type(type_var)
+            if the_type.is_a?(ASTNode)
+              next the_type as TypeVar
+            end
+          end
+
           @type = nil
           type_var.accept self
           return false if !@raise && !@type
@@ -148,7 +156,11 @@ module Crystal
 
     def visit(node : TypeOf)
       unless @allow_typeof
-        node.raise "can't use 'typeof' here"
+        if @raise
+          node.raise "can't use 'typeof' here"
+        else
+          return false
+        end
       end
 
       meta_vars = MetaVars{"self": MetaVar.new("self", @self_type)}

@@ -22,7 +22,6 @@ module Crystal
     property observers : Dependencies?
     property input_observer : Call?
 
-    @dirty : Bool
     @dirty = false
 
     @type : Type?
@@ -759,7 +758,7 @@ module Crystal
   {% for name in %w(And Or
                    ArrayLiteral HashLiteral RegexLiteral RangeLiteral
                    Case StringInterpolation
-                   MacroExpression MacroIf MacroFor) %}
+                   MacroExpression MacroIf MacroFor MultiAssign) %}
     class {{name.id}}
       include ExpandableNode
     end
